@@ -104,6 +104,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+	/*
   MX_CRC_Init();
   MX_SDIO_SD_Init();
   MX_SPI1_Init();
@@ -116,7 +117,7 @@ int main(void)
   MX_TIM7_Init();
   MX_TIM8_Init();
   MX_USART1_UART_Init();
-
+	*/
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -126,7 +127,7 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-
+		HAL_GPIO_TogglePin(GPIOF, Motor1_PWM_Pin);
   /* USER CODE BEGIN 3 */
 
   }

@@ -55,6 +55,7 @@ TIM_HandleTypeDef htim7;
 TIM_HandleTypeDef htim8;
 
 UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
@@ -79,6 +80,7 @@ static void MX_TIM6_Init(void);
 static void MX_TIM7_Init(void);
 static void MX_TIM8_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_USART2_UART_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -86,7 +88,7 @@ static void MX_USART1_UART_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-
+uint8_t uart_trans[2] = {0xff, 0xee};
 /* USER CODE END 0 */
 
 int main(void)
@@ -112,8 +114,7 @@ int main(void)
   MX_SPI1_Init();
 	*/
   MX_TIM1_Init();
- 
-	MX_TIM2_Init();
+  MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_TIM5_Init();
@@ -121,6 +122,7 @@ int main(void)
   MX_TIM7_Init();
   MX_TIM8_Init();
   MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
 
   /* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim1);
@@ -145,6 +147,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	//HAL_UART_Transmit_IT(&huart1, uart_trans, 2);
+	HAL_UART_Transmit(&huart2, uart_trans, 2, 1000);
   while (1)
   {
   /* USER CODE END WHILE */
@@ -517,6 +520,25 @@ static void MX_USART1_UART_Init(void)
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
   if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+}
+
+/* USART2 init function */
+static void MX_USART2_UART_Init(void)
+{
+
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
   {
     Error_Handler();
   }

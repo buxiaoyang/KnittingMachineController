@@ -58,7 +58,9 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+ 
+/* Buffer used for reception */
+uint8_t aRxBuffer[20];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -84,9 +86,7 @@ static void MX_USART1_UART_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-uint8_t uart_trans[2] = {0xFE, 0xAB};
-uint8_t uart_receive;
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+
 /* USER CODE END 0 */
 
 int main(void)
@@ -122,7 +122,7 @@ int main(void)
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
-	HAL_UART_Receive_IT(&huart1, (uint8_t *)&uart_receive, 1);
+    HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, 10);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -609,10 +609,15 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+  * @brief Rx Transfer completed callbacks
+  * @param huart: uart handle
+  * @retval None
+  */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	HAL_UART_Receive_IT(&huart1, (uint8_t *)&uart_receive, 1);
-	HAL_UART_Transmit(&huart1, (uint8_t *)&uart_receive, 1, 1000);
+    HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, 10);
+    HAL_UART_Transmit(&huart1, (uint8_t *)aRxBuffer, 10,0xFFFF);
 }
 /* USER CODE END 4 */
 

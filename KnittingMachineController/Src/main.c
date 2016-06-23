@@ -676,87 +676,92 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pins : Motor2_Limt_Start_Pin Motor2_Limt_End_Pin Motor3_Limt_Start_Pin Motor3_Limt_End_Pin 
-                           Motor4_Limt_Start_Pin Motor4_Limt_End_Pin Motor5_Limt_Start_Pin Motor5_Limt_End_Pin 
-                           Motor6_Limt_Start_Pin Motor6_Limt_End_Pin Motor7_Limt_Start_Pin Motor7_Limt_End_Pin 
-                           Motor8_Limt_Start_Pin Motor8_Limt_End_Pin Motor1_Limt_Start_Pin Motor1_Limt_End_Pin */
+                           Motor4_Limt_Start_Pin */
   GPIO_InitStruct.Pin = Motor2_Limt_Start_Pin|Motor2_Limt_End_Pin|Motor3_Limt_Start_Pin|Motor3_Limt_End_Pin 
-                          |Motor4_Limt_Start_Pin|Motor4_Limt_End_Pin|Motor5_Limt_Start_Pin|Motor5_Limt_End_Pin 
-                          |Motor6_Limt_Start_Pin|Motor6_Limt_End_Pin|Motor7_Limt_Start_Pin|Motor7_Limt_End_Pin 
-                          |Motor8_Limt_Start_Pin|Motor8_Limt_End_Pin|Motor1_Limt_Start_Pin|Motor1_Limt_End_Pin;
+                          |Motor4_Limt_Start_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PI8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : PI9 PI10 PI11 PI0 
-                           PI1 PI2 PI3 PI4 
-                           PI5 PI6 PI7 */
-  GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_0 
-                          |GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4 
-                          |GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
+  /*Configure GPIO pins : Motor4_PWM_Pin Motor5_PWM_Pin Motor6_PWM_Pin Motor1_PWM_Pin 
+                           Motor2_PWM_Pin Motor3_PWM_Pin */
+  GPIO_InitStruct.Pin = Motor4_PWM_Pin|Motor5_PWM_Pin|Motor6_PWM_Pin|Motor1_PWM_Pin 
+                          |Motor2_PWM_Pin|Motor3_PWM_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Motor1_PWM_Pin Motor2_PWM_Pin Motor3_PWM_Pin Motor4_PWM_Pin 
-                           Motor5_PWM_Pin Motor6_PWM_Pin Motor7_PWM_Pin Motor8_PWM_Pin 
-                           Motor1_Dir_Pin Motor2_Dir_Pin Motor3_Dir_Pin Motor4_Dir_Pin 
-                           Motor5_Dir_Pin Motor6_Dir_Pin Motor7_Dir_Pin Motor8_Dir_Pin */
-  GPIO_InitStruct.Pin = Motor1_PWM_Pin|Motor2_PWM_Pin|Motor3_PWM_Pin|Motor4_PWM_Pin 
-                          |Motor5_PWM_Pin|Motor6_PWM_Pin|Motor7_PWM_Pin|Motor8_PWM_Pin 
-                          |Motor1_Dir_Pin|Motor2_Dir_Pin|Motor3_Dir_Pin|Motor4_Dir_Pin 
-                          |Motor5_Dir_Pin|Motor6_Dir_Pin|Motor7_Dir_Pin|Motor8_Dir_Pin;
+  /*Configure GPIO pins : Motor7_PWM_Pin Motor8_PWM_Pin Motor1_Dir_Pin Motor2_Dir_Pin 
+                           Motor3_Dir_Pin */
+  GPIO_InitStruct.Pin = Motor7_PWM_Pin|Motor8_PWM_Pin|Motor1_Dir_Pin|Motor2_Dir_Pin 
+                          |Motor3_Dir_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PD6 PD7 */
-  GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+  /*Configure GPIO pins : Motor4_Dir_Pin Motor5_Dir_Pin */
+  GPIO_InitStruct.Pin = Motor4_Dir_Pin|Motor5_Dir_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PG9 PG10 PG11 PG12 
-                           PG13 PG14 */
-  GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12 
-                          |GPIO_PIN_13|GPIO_PIN_14;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : Relay_Data_Pin Relay_CLK_Pin Relay_LAT_Pin */
-  GPIO_InitStruct.Pin = Relay_Data_Pin|Relay_CLK_Pin|Relay_LAT_Pin;
+  /*Configure GPIO pins : Motor6_Dir_Pin Motor7_Dir_Pin Relay_Data_Pin Relay_CLK_Pin 
+                           Relay_LAT_Pin */
+  GPIO_InitStruct.Pin = Motor6_Dir_Pin|Motor7_Dir_Pin|Relay_Data_Pin|Relay_CLK_Pin 
+                          |Relay_LAT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOI, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11 
-                          |GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3 
-                          |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, GPIO_PIN_RESET);
+  /*Configure GPIO pin : Motor8_Dir_Pin */
+  GPIO_InitStruct.Pin = Motor8_Dir_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(Motor8_Dir_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Motor1_Limt_Start_Pin Motor1_Limt_End_Pin Motor4_Limt_End_Pin Motor5_Limt_Start_Pin 
+                           Motor5_Limt_End_Pin */
+  GPIO_InitStruct.Pin = Motor1_Limt_Start_Pin|Motor1_Limt_End_Pin|Motor4_Limt_End_Pin|Motor5_Limt_Start_Pin 
+                          |Motor5_Limt_End_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Motor6_Limt_Start_Pin Motor6_Limt_End_Pin Motor7_Limt_Start_Pin Motor7_Limt_End_Pin 
+                           Motor8_Limt_Start_Pin Motor8_Limt_End_Pin */
+  GPIO_InitStruct.Pin = Motor6_Limt_Start_Pin|Motor6_Limt_End_Pin|Motor7_Limt_Start_Pin|Motor7_Limt_End_Pin 
+                          |Motor8_Limt_Start_Pin|Motor8_Limt_End_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOF, Motor1_PWM_Pin|Motor2_PWM_Pin|Motor3_PWM_Pin|Motor4_PWM_Pin 
-                          |Motor5_PWM_Pin|Motor6_PWM_Pin|Motor7_PWM_Pin|Motor8_PWM_Pin 
-                          |Motor1_Dir_Pin|Motor2_Dir_Pin|Motor3_Dir_Pin|Motor4_Dir_Pin 
-                          |Motor5_Dir_Pin|Motor6_Dir_Pin|Motor7_Dir_Pin|Motor8_Dir_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOI, Motor4_PWM_Pin|Motor5_PWM_Pin|Motor6_PWM_Pin|Motor1_PWM_Pin 
+                          |Motor2_PWM_Pin|Motor3_PWM_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, Relay_Data_Pin|Relay_CLK_Pin|Relay_LAT_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOF, Motor7_PWM_Pin|Motor8_PWM_Pin|Motor1_Dir_Pin|Motor2_Dir_Pin 
+                          |Motor3_Dir_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, Motor4_Dir_Pin|Motor5_Dir_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, Motor6_Dir_Pin|Motor7_Dir_Pin|Relay_Data_Pin|Relay_CLK_Pin 
+                          |Relay_LAT_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(Motor8_Dir_GPIO_Port, Motor8_Dir_Pin, GPIO_PIN_RESET);
 
 }
 

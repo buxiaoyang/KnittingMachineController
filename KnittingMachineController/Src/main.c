@@ -110,19 +110,28 @@ int main(void)
   MX_CRC_Init();
   MX_SDIO_SD_Init();
   MX_SPI1_Init();
+	*/
   MX_TIM1_Init();
-  MX_TIM2_Init();
+ 
+	MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_TIM5_Init();
   MX_TIM6_Init();
   MX_TIM7_Init();
   MX_TIM8_Init();
-	*/
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
-    HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, 10);
+	HAL_TIM_Base_Start_IT(&htim1);
+	HAL_TIM_Base_Start_IT(&htim2);
+	HAL_TIM_Base_Start_IT(&htim3);
+	HAL_TIM_Base_Start_IT(&htim4);
+	HAL_TIM_Base_Start_IT(&htim5);
+	HAL_TIM_Base_Start_IT(&htim6);
+	HAL_TIM_Base_Start_IT(&htim7);
+	HAL_TIM_Base_Start_IT(&htim8);
+	HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, 10);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -133,7 +142,7 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-		HAL_GPIO_TogglePin(GPIOF, Motor1_PWM_Pin);
+		
 		//HAL_UART_Transmit_IT(&huart1, uart_trans, 2);
   }
   /* USER CODE END 3 */
@@ -252,9 +261,9 @@ static void MX_TIM1_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 100;
+  htim1.Init.Prescaler = 5000;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 100;
+  htim1.Init.Period = 1;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
@@ -285,9 +294,9 @@ static void MX_TIM2_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 100;
+  htim2.Init.Prescaler = 5000;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 100;
+  htim2.Init.Period = 2;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
   {
@@ -317,9 +326,9 @@ static void MX_TIM3_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 100;
+  htim3.Init.Prescaler = 5000;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 100;
+  htim3.Init.Period = 3;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
   {
@@ -349,9 +358,9 @@ static void MX_TIM4_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 100;
+  htim4.Init.Prescaler = 5000;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 100;
+  htim4.Init.Period = 4;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
   {
@@ -381,9 +390,9 @@ static void MX_TIM5_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim5.Instance = TIM5;
-  htim5.Init.Prescaler = 100;
+  htim5.Init.Prescaler = 5000;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim5.Init.Period = 100;
+  htim5.Init.Period = 5;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
   {
@@ -412,9 +421,9 @@ static void MX_TIM6_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim6.Instance = TIM6;
-  htim6.Init.Prescaler = 1000;
+  htim6.Init.Prescaler = 5000;
   htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim6.Init.Period = 1000;
+  htim6.Init.Period = 6;
   if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
   {
     Error_Handler();
@@ -436,9 +445,9 @@ static void MX_TIM7_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim7.Instance = TIM7;
-  htim7.Init.Prescaler = 1000;
+  htim7.Init.Prescaler = 5000;
   htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim7.Init.Period = 1000;
+  htim7.Init.Period = 7;
   if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
   {
     Error_Handler();
@@ -461,9 +470,9 @@ static void MX_TIM8_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim8.Instance = TIM8;
-  htim8.Init.Prescaler = 1000;
+  htim8.Init.Prescaler = 5000;
   htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim8.Init.Period = 1000;
+  htim8.Init.Period = 8;
   htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim8.Init.RepetitionCounter = 0;
   if (HAL_TIM_Base_Init(&htim8) != HAL_OK)
@@ -618,6 +627,55 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, 10);
     HAL_UART_Transmit(&huart1, (uint8_t *)aRxBuffer, 10,0xFFFF);
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @param  htim: TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance == htim1.Instance)
+    {
+        /* Toggle LED */
+        HAL_GPIO_TogglePin(GPIOF, Motor1_PWM_Pin);
+    }
+		else if (htim->Instance == htim2.Instance)
+    {
+        /* Toggle LED */
+        HAL_GPIO_TogglePin(GPIOF, Motor2_PWM_Pin);
+    }
+		else if (htim->Instance == htim3.Instance)
+    {
+        /* Toggle LED */
+        HAL_GPIO_TogglePin(GPIOF, Motor3_PWM_Pin);
+    }
+		else if (htim->Instance == htim4.Instance)
+    {
+        /* Toggle LED */
+        HAL_GPIO_TogglePin(GPIOF, Motor4_PWM_Pin);
+    }
+		else if (htim->Instance == htim5.Instance)
+    {
+        /* Toggle LED */
+        HAL_GPIO_TogglePin(GPIOF, Motor5_PWM_Pin);
+    }
+		else if (htim->Instance == htim6.Instance)
+    {
+        /* Toggle LED */
+        HAL_GPIO_TogglePin(GPIOF, Motor6_PWM_Pin);
+    }
+		else if (htim->Instance == htim7.Instance)
+    {
+        /* Toggle LED */
+        HAL_GPIO_TogglePin(GPIOF, Motor7_PWM_Pin);
+    }
+		else if (htim->Instance == htim8.Instance)
+    {
+        /* Toggle LED */
+        HAL_GPIO_TogglePin(GPIOF, Motor8_PWM_Pin);
+    }
 }
 /* USER CODE END 4 */
 

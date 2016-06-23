@@ -88,7 +88,27 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-uint8_t uart_trans[2] = {0xff, 0xee};
+	//define printf function for UART2
+	#ifdef __GNUC__
+		/* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+			 set to 'Yes') calls __io_putchar() */
+		#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+	#else
+		#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+	#endif /* __GNUC__ */
+	/**
+		* @brief  Retargets the C library printf function to the USART.
+		* @param  None
+		* @retval None
+		*/
+	PUTCHAR_PROTOTYPE
+	{
+		/* Place your implementation of fputc here */
+		/* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
+		HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+	 
+		return ch;
+	}
 /* USER CODE END 0 */
 
 int main(void)
@@ -147,7 +167,8 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	//HAL_UART_Transmit_IT(&huart1, uart_trans, 2);
-	HAL_UART_Transmit(&huart2, uart_trans, 2, 1000);
+	//HAL_UART_Transmit(&huart2, uart_trans, 2, 1000);
+	printf("\nwelcome to www.waveshere.com !!!\n");
   while (1)
   {
   /* USER CODE END WHILE */

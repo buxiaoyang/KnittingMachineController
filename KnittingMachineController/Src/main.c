@@ -34,7 +34,7 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -42,6 +42,8 @@ CRC_HandleTypeDef hcrc;
 
 SD_HandleTypeDef hsd;
 HAL_SD_CardInfoTypedef SDCardInfo;
+DMA_HandleTypeDef hdma_sdio_rx;
+DMA_HandleTypeDef hdma_sdio_tx;
 
 SPI_HandleTypeDef hspi1;
 
@@ -59,7 +61,9 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
- 
+HAL_SD_ErrorTypedef Status;
+uint32_t Buffer_Tx[512/4], Buffer_Rx[512/4];
+uint32_t i;
 /* Buffer used for reception */
 uint8_t aRxBuffer[20];
 /* USER CODE END PV */
@@ -68,6 +72,7 @@ uint8_t aRxBuffer[20];
 void SystemClock_Config(void);
 void Error_Handler(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_CRC_Init(void);
 static void MX_SDIO_SD_Init(void);
 static void MX_SPI1_Init(void);
@@ -128,11 +133,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-	/*
+  MX_DMA_Init();
   MX_CRC_Init();
   MX_SDIO_SD_Init();
   MX_SPI1_Init();
-	*/
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
@@ -162,6 +166,75 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim8);
 	HAL_Delay(10);
 	HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, 10);
+	
+	//SD testing
+		printf(" Warning: this program may erase all the TF card data. \r\n");
+     
+    printf("\r\n Initialize SD card successfully!\r\n\r\n");
+    printf(" SD card information! \r\n");
+    printf(" CardCapacity  : %llu \r\n",SDCardInfo.CardCapacity );
+    printf(" CardBlockSize : %d \r\n",SDCardInfo.CardBlockSize);
+    printf(" RCA           : %d \r\n",SDCardInfo.RCA);
+    printf(" CardType      : %d \r\n",SDCardInfo.CardType);
+ 
+    /*------------------- Block Write --------------------------*/
+    memset(Buffer_Tx,0x15,sizeof(Buffer_Tx));
+    if(HAL_SD_WriteBlocks_DMA(&hsd, Buffer_Tx, 0, 512, 1) == SD_OK)
+    {  
+        Status = HAL_SD_CheckWriteOperation(&hsd, (uint32_t)100000000);
+        if (Status == SD_OK)
+        {
+            printf("\r\n Write block successfully!\r\n");
+            for(i=0;i<sizeof(Buffer_Tx)>>2;i++)
+            {
+                printf("%02x:0x%08x ",i,Buffer_Tx[i]);
+            }
+            printf("\r\n");
+        }
+        else 
+            printf("\r\n Write block fail!\r\n");
+    }
+     
+    /*------------------- Block Read --------------------------*/
+    if(HAL_SD_ReadBlocks_DMA(&hsd, Buffer_Rx, 0, 512, 1) == SD_OK)
+    {
+        Status = HAL_SD_CheckReadOperation(&hsd, 0xFFFF);
+        if (Status == SD_OK)
+        {
+            printf("\r\n Read block successfully!\r\n");
+            for(i=0;i<sizeof(Buffer_Rx)>>2;i++)
+            {
+                printf("%02x:0x%08x ",i,Buffer_Rx[i]);
+            }
+            printf("\r\n");
+        }
+        else 
+            printf("\r\n Read block fail!\r\n");
+    }
+     
+    /*------------------- Block Erase -------------------------------*/
+    Status = HAL_SD_Erase(&hsd, 0, 512);
+    if (Status == SD_OK)
+			printf("\r\n Erase block successfully!\r\n");
+    else 
+        printf("\r\n Erase block fail!\r\n");
+     
+    /*------------------- Block Read --------------------------*/
+    if(HAL_SD_ReadBlocks_DMA(&hsd, Buffer_Rx, 0, 512, 1) == SD_OK)
+    {
+        Status = HAL_SD_CheckReadOperation(&hsd, 0xFFFF);
+        if (Status == SD_OK)
+        {
+            printf("\r\n Read block successfully!\r\n");
+            for(i=0;i<sizeof(Buffer_Rx)>>2;i++)
+            {
+                printf("%02x:0x%08x ",i,Buffer_Rx[i]);
+            }
+            printf("\r\n");
+        }
+        else 
+            printf("\r\n Read block fail!\r\n");
+    }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -563,6 +636,24 @@ static void MX_USART2_UART_Init(void)
   {
     Error_Handler();
   }
+
+}
+
+/** 
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void) 
+{
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA2_Stream3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 6, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
+  /* DMA2_Stream6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream6_IRQn, 6, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream6_IRQn);
 
 }
 

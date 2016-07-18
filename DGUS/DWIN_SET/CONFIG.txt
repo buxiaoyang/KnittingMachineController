@@ -3,6 +3,5 @@ R2=00      ;Sys_CFG
 R3=5A      ;
 RA=A5      ;
 STOP_DWIN_OS;
-TP_CORRECT;
 RC=00      ;
 
